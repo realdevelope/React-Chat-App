@@ -1,0 +1,123 @@
+<기본구조>
+
+`.리액트 앱 설치
+-npx create-react-app ./
+  -->안되서 이름 직접입력해서 설치완료
+-npm run start 
+  --->port3000에서 확인!
+
+2.Create React App구조(Structure)
+-https://create-react-app.dev/docs/folder-structure/  참고
+-참고한구조 -> 보일러플레이트에 특성화된 구조로 또 변경
+ assets/ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> 이미지, css, js 파일들 보관
+ commons/ components ㅡㅡㅡㅡㅡㅡㅡ> 여러 페이지에서 쓰일 수 있는것들
+               typs ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> typescript를 위해서 type 지정(안쓰지만 생성)
+ components ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> Page들을 넣음
+ redux/ actions ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> Redux 를 위한 폴더들
+          reducer ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> / /
+ App.jsㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ> Routing 관련 일을 처리
+-위처럼 폴더들 생성해줌
+
+3.React Router Dom
+1)App.js 에서 페이지를 이동할 수 있게 라우팅처리
+ -->리액트에서는 페이지이동을 시킬때 React Router Dom이라는 모듈을 이용
+2)react-router-dom에서 제공하는 import 작성 후 App.js에 작성
+3)LoginPage에 LoginPage.js, RegisterPage에 RegisterPage.js 파일생성 후 
+  rfce로 function component 작성- (ES7 dev tool 다운하면 작성가능)
+4)Components에 ChatPage 폴더 생성후 해당 폴더안에 ChatPage.js 파일 생성하고
+ 위와같이 rfce로 function componet 작성
+5)새로만든 컴포넌트들 App.js 에 import 작성하여 가져오고,  Route 작성
+6)npm install react-router-dom --save 로 설치
+7)잘 작동하는지 확인
+ 
+4.리덕스 기본구조
+1)npm install redux react-redux redux-promis redux-thunk  로 dependency들 다운
+2)리덕스를 연결 -> index.js 에 아래와 같이 작성
+ import { Provider } from 'react-redux';  작성후
+ <Provider>
+     <App/>
+ </Provider>	처럼 App을 감싸준다
+3)<Provider store ={}> 해주는데 리덕스는 객체만 받을 수 있는데 함수,프로미스를
+  받기위해서  미들웨어랑 같이 넣어준다 (아래와같음) 
+4)import { createStore, applyMiddleware } from 'redux';
+ import promiseMiddleware from 'redux-promise';
+ import ReduxThunk from 'redux-thunk';    이렇게 3가지 import 해준뒤에
+ const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore)
+ 작성후 <Provider store ={ reateStoreWithMiddleware} > 스토어안에 넣어줌
+5)<Provider store ={ reateStoreWithMiddleware() } > 안에 reducer 넣어주기위해 
+  reducer폴더에 index.js 파일을 생성후 아래와 같이 작성
+  import { combineReducers } from 'redux';
+  //import user from './user_reducer';
+  //import chatRoom from './chatRoom_reducer';
+
+  const rootReducer = combineReducers({
+      //user,
+      //chatRoom
+  })
+
+  export default rootReducer;    
+6)작성후 index.js 로 돌아와 import Reducer from './redux/reducers';  작성
+7)그리고나서 reducer을 넣어줌 <Provider store ={ reateStoreWithMiddleware(reducer) } >
+8)reducer crome extenction도 사용할 수 있게 하기 위해 아래와 같이 추가함
+ <Provider store={ createStoreWithMiddleware(
+    Reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION__()) 
+    }>
+
+ 
+5.애플리케이션 전체적인 구조
+-단순한 CRUD 앱이 아닌 채팅 애플이기 떄문에 실시간(real time)!!!!
+ -->보통 실시간이 강조되는것은nodejs, database, socket io모듈을 통해서 많이 만듬
+ -->하지만 Firebase를 이용하여 하나로 해버림!!!!
+-Normar Real Time Chat App과 Real Time Chat App (Firevase)의 차이
+  -->먼저 REST vs Websockets
+  -->다음으로 FIrebase에 대해서 좀 더 알아보자
+
+6.REST vs WebSockets
+-ex)A 와 B가 채팅을 나누는데 해당 채팅을 확인하려면
+ REST 를 사용시-->  리프레쉬를 해줘야 한다
+ Websockets 을 사용시--> 즉시 가능
+-ex)택시 앱에서 손님이 택시기사의 위치를 알고 싶을떄 
+ Rest는 -------->그떄그때 서버에 요청을 해서 확인 (한방향 통신)
+ Websockets 은------>계속 요청을 하지 않아도 택시기사가 
+                             위치를 전달하면 바로 알 수 있음  (양방향 통신)
+==> Firebase가 Websockets 방식!!!!!!
+
+7.Firebase
+-어플리케이션을 만들떄 필요한 부분들을 자동으로 만들어주는 플랫폼 (구글에서 만듬)
+-앱을 만들떄 필요한 부분들을 Firebase 플랫폼을 사용함으로써 쉽게 할 수 있음
+ -->인증, 데이터베이스, 스토리지, 푸시알림, 배포 등등
+-데이터베이스는 관계형 데이터베이스(Mysql이나 오라클)가 아닌 
+ NoSQL 기반인 (MongoDB)DOcumnet 형식의 빠르고 간편한 DB사용
+****RTSP(Real Time Stream Protocol)방식을 지원
+     -->실시간으로 데이터를 전송해주는 방식(리프레쉬 필요x)
+
+8.Firebase 사용
+1)홈페이지 접속 -> getstarted -> add project -> 프로젝트명(react-firebase-chat-app)
+ -> continue -> 애널리스틱을 사용할 어카운트를 선택 -> create
+2)프로젝트가 만들어진후 첫 페이지에서 <>(web)을 선택 -> 앱 닉네임(react-firebase-app)
+ ->firebase SDK 소스가 나오고 그걸 사용하는게 일반적이지만, react 에선
+   npm으로 설치할 수 있기때문에 복사하지 않는다.
+3)npm install firebase --save 로 다운(아까의 그 코드를 npm으로 대체)
+4)src에 firebase.js 파일을 생성후 SDK소스중 가장 아래의 script부분만 복사하여 삽입후
+  import firebase from "firebase/app"; 를 상단에 작성
+5)파이어베이스는 인증, 데이터베이스, 스토리지 등 여러가지를 하기에 
+  할 수 있도록 import "firebase/auth"; 
+	      import "firebase/database"; 
+                  import "firebase/storage";    가져온다.
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+<인증처리>
+
+1.React Bootstrap
+2.회원가입 페이지 UI 만들기
+3.react-hook-form을 이용한 회원가입 유효성체크
+4.useRef를 이요한 현재 password 값 찾기
+5.firebase에서 이메일로 유저 생성시 생기는 문제점
+6.firebase에서 이메일로 유저 생성
+7.프로세스 처리 중 Button을 누르지 못하게 막기
+8.Firebase에 생성한 유저에 상세 정보 추가하기
+9.Firebase에 생서한 유저 데이터 베이스에 저장
+10.로그인 페이지 만들기
+11.인증된 이후의 페이지 이동 & useHistory
+12.Redux 스토에 로그인 유저 정보 저장
