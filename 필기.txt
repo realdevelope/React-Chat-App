@@ -109,15 +109,167 @@
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 <인증처리>
 
-1.React Bootstrap
+1.React Bootstrap 
+-CSS Framwork - Reeact Bootstrap (가장 많이 사용하는 부트스트랩)
+ -->사용하는이유는 기능을 만드는데 더 집중하기위해서
+-CSS Framwork의 종류
+  -->Mater UI, Semantic UI, Ant Design, Materiallze 등
+1)https://react-bootstrap.github.io/  사이트 참고하여
+  npm install bootstrap react-bootstrap --save 로 다운
+2)stylesheet도 필요하기때문에 index.js에
+  import 'bootstrap/dist/css/bootstrap.min.css';  삽입.
+3)로고디자인도 필요하기 떄문에 
+ https://react-icons.github.io/react-icons/#/ 사이트 참고하여
+ npm install react-icons --save  로 다운
+
 2.회원가입 페이지 UI 만들기
+-이메일, 이름, 비밀번호, 비밀번호 확인, 전송버튼 제작 
+1)UI 웹사이트로이동  https://react-hook-form.com/kr/get-started/
+ React Hook Form 으로 간단하게 유효성 검사를 하기 위해 사용하는것이고
+ codesandbox의 UI부분을 그대로 사용할것이므로 복사하여
+ Components의 RegisterPage의 Register.js에 붙여넣는다 (이벤트부분은 지워줌)
+2)css를 입혀주는데 마찬가지로 codesandbox의 style.css를 복사하여
+  index.css에 붙여넣는다.
+3)붙여놓은 <div>에 classname을 auth-wrapper로 짓고
+ index.css에 붙여넣은 부분을 전부 .auth-wrapper 를 앞에 붙여주어 
+ 다른 같은 태그에는 적용이 안되도록 한다
+4)UI를 가운데에 오게 하기 위해 index.css의 .APP을 지우고
+ 맨위의 .auth-wrapper을 만들고 css를 작성
+5)auth-wrapper form 에 max-width를 그냥 width로 바꾸고 375px로 설정
+6)Register.js의 제목을 만들어준다.
+7)버튼의 색상과, 호버했을떄의 버튼 색상을 변경해준다
+8)Register.js에서 계획했던 이메일, 이름, 비밀번호, 비밀번호 확인, 총 4칸을 작성
+9)각 label의 이름을 변경해주고, input의 name과 type을 각각 맡게 변경해준다
+10)제출 버튼 아래에 "이미 아이디가 있으신가요?.??" 라는 문구를 클릭하면
+    LoginPage로 이동하게 <Link>를 사용하여 작성한다.
+    <Link style={{color: "gray", textDecoration: "none"}} to="login">이미 아이디가 있으신가요?.??</Link>
+11)label의 margin을 보기좋게 10px, 15px로 수정!! 
+
 3.react-hook-form을 이용한 회원가입 유효성체크
-4.useRef를 이요한 현재 password 값 찾기
+-npm install react-hook-form --save로 다운
+-react-hook-form 사용법 숙지
+ >watch를 이용해서 input의 입력을 계쏙 지켜봄
+ 1)import { useForm } from 'react-hook-form';
+ 2)const { register, watch, errors } = useForm();
+    console.log(watch("email"));
+ 3)input 안에 ref={register({ required: true, maxLength: 10 })} 삽입
+ 4)input 밖에 {errors.exampleRequired && <p>This field is required</p>} 삽입
+   --> 3)에 유효성 체크를 벗어날시 <p>태그의 에러문구를 배출
+-사용하는 이유 - 깔끔하고, 퍼포먼스도 좋기떄문
+-각 필드에 맞게 유효성 체크 넣어주기
+ >이메일에 맞는 정규식 : pattern : /^\S+@\S+$/i
+ >유효성 검사 개수에 따라 errors도 각각 맡게 작성
+ ***passwordconfirm은 조금 복잡함
+    >코드에 주석으로 작성
+
+4.useRef를 이용한 현재 password 값 찾기
+-코드에 주석으로 작성
+
 5.firebase에서 이메일로 유저 생성시 생기는 문제점
+-원래는 클라이언트에서 이름,이메일등 정보들을 백에 던지고 
+ db에 저장함으로써 유저생성 -->하지만 firebase에선 인증부분까지 다 처리해줌
+-이메일, 패스워드만 전달해주면 됨!! 
+ 1)제출 버튼을 눌렀을때 이벤트 함수처리
+   >import firebase from '../..//firebase';
+   >const onSubmit = async() =>{
+	let createdUser =await firebase.auth().createUserWithEmailAndPassword()
+     }
+   >이하 생략 코드에 작성
+
 6.firebase에서 이메일로 유저 생성
+-이메일로 유저 생성할수 있게 설정
+ firebase 홈페이지 -> Authentlcation -> sign-in method -> email/password 클릭
+ ->enable -> save
+-http://localhost:3000/register 에서 회원가입후 제출버튼 누르면 회원가입 완료
+ -> firebase에도 제대로 되어있는지 확인( Authentication -> users )
+
 7.프로세스 처리 중 Button을 누르지 못하게 막기
+-submit 버튼을 눌렀을떄 firebase에서 유저 생성처리중에는 버튼이 클릭안되게!!!
+ 1)loading state 생성
+   ->RegisterPage.js에 const [loading, setloading] = useState(false) 작성
+ 2)loading state 컨트롤
+   ->try catch문에 try구문 첫줄에 setLoading(true), 마지막줄에 setLoading(false) 작성
+   ->try catch문에 catch구문dp setloading(false) 작성
+ 3)loading button UI
+   ->전송 버튼에 disabled={loading} 추가  
+     <input type="submit" disabled={loading}></input>
+
 8.Firebase에 생성한 유저에 상세 정보 추가하기
-9.Firebase에 생서한 유저 데이터 베이스에 저장
+-email, password 외에 이름, 사진, 휴대폰번호 등을 업데이트!!
+ 1)이메일과 비밀번호로 유저생성한 부분 아래에 아래와 같이 추가정보입력 코드 작성
+     await createdUser.user.updatePRofile({
+            displayName: data.name,
+            photoURL: `http:gravatar.com/avatar/`    
+      })
+ 2) 1)을 작성할때 MD5를 작성해야하는데 MD5란
+    >유니크한 값을 가지기위해서 사용되는 모듈 
+      ->형식 
+        var md5 = require('md5');
+        console.log(md5('message')); -------->유니크한 값이 출력
+ 3) md5를 사용하기 위해서 md5모듈  설치
+    npm install md5 --save
+ 4) import md5 from 'md5';
+ 5) 1)에 이어 md5 작성
+     await createdUser.user.updateProfile({
+          displayName: data.name,
+          photoURL: `http:gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`   
+     })
+ 6) 다시 회원가입 후 확인
+
+9.Firebase에 생성한 유저 데이터 베이스에 저장
+-인증서비스 부분에서만 생성이된거고 데이터베이스에는 x
+-데이터베이스 생성
+  realtime Database -> 미국 -> testmode -> 생성완료
+-데이터베이스 구조
+  Database -------가장 상단
+  Table----------- 콜렉션이라고도 부름
+  row-------------테이블의 row
+  column---------컬럼
+-DB저장하는법
+ >MYSQL
+   INSERT INTO USERS (email, displayName, photoURL)
+   VALUES (sanghoon@naver.com, sanghoon, gravatar....) 
+ >MongoDB
+   UserModel.create({email: "sanghoon@naver.com",
+                           name: "sanghoon",
+                           photoURL: "gravata"})
+ >Firebase
+   firebase.database().ref("users").child(userid).set({	//ref: Reference 약자로 경로를 넣어주면됨
+		 name: displayName,
+                         image: photoURL })
+-실제로 작성
+ 1) Firebase 데이터베이스에 저장해주기
+    await firebase.database().ref("users").child(createUser.user.uid).set({	//ref: Reference 약자로 경로를 넣어주면됨
+		 name: createdUser.user.displayName,
+                         image: createdUser.user.photoURL })
+ 2) 새로 회원가입하고 firebase realtime database 확인
+
 10.로그인 페이지 만들기
+-RegisterPage.js 와 비슷하기때문에 복사하여 가져온후
+  불필요한부분(다른부분)을 지우는식으로 진행
+  >md5 제거 
+  >useRef 제거
+  >watch 제거
+  >try구문의 setLoading(true), setLoading(false)뺴고 제거
+  >Password Confirm, Name 부분 제거
+  >register 제목부분 Login으로 수정
+  >Link 부분 to="register" 로 수정, 텍스트도 아직 아이디가 없으신가요?.?? 로 수정
+-try구문 작성
+  try {                              
+            setloading(true)
+            await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+            setloading(false)
+        } 
+-로그인 해보고 에러뜨는지 확인 
+  -> 에러는 안뜨지만 로그인된후 페이지이동 x
+
 11.인증된 이후의 페이지 이동 & useHistory
+-
+
 12.Redux 스토에 로그인 유저 정보 저장
+-
+
+
+
+
+

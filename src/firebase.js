@@ -18,3 +18,5 @@ import "firebase/storage";  //스토리지 사용할 수 있게
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   //firebase.analytics(); //통계를 보여주는부분
+
+  export default firebase;
