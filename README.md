@@ -1,6 +1,6 @@
 ## React, Firebase - 채팅 어플리케이션 
 #1월 한달 프론트앤드 기초부터 바로잡기 프로젝트 17/30<br>
-#AtoZ 첫 서비스 배포 도전
+#AtoZ 첫 서비스 배포 도전 (진행중..)
 
 ## 학습환경
 #vsc
@@ -23,7 +23,7 @@
 1. React Bootstrap✔
 2. 회원가입 페이지 UI 만들기✔
 3. react-hook-form을 이용한 회원가입 유효성체크✔
-4. useRef를 이요한 현재 password 값 찾기✔
+4. useRef를 이용한 현재 password 값 찾기✔
 5. firebase에서 이메일로 유저 생성시 생기는 문제점✔
 6. firebase에서 이메일로 유저 생성✔
 7. 프로세스 처리 중 Button을 누르지 못하게 막기✔
