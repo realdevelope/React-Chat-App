@@ -30,5 +30,16 @@
 8. Firebase에 생성한 유저에 상세 정보 추가하기✔
 9. Firebase에 생서한 유저 데이터 베이스에 저장✔
 10. 로그인 페이지 만들기✔
-11. 인증된 이후의 페이지 이동 & useHistory
-12. Redux 스토에 로그인 유저 정보 저장
+11. 인증된 이후의 페이지 이동 & useHistory✔
+12. Redux 스토에 로그인 유저 정보 저장✔
+
+`-채팅페이지(기본구조)`
+1. 채팅 페이지 UI✔
+2. User Panel 기본구조 제작✔
+3. 로그아웃과 동시에 리덕스 스토어 유저정보 지우기✔
+4. 프로필 이미지 수정 - firebase, 리덕스스토어 데이터변경 및 DB에 저장✔
+5. 채팅룸 리스트 UI✔
+6. 채팅 룸 생성✔
+7. firebase에서 데이터 실시간으로 받기
+8. Set current chat room
+9. Clean up event listener
