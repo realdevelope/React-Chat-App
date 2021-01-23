@@ -1,6 +1,6 @@
 <기본구조>
 
-`.리액트 앱 설치
+1.리액트 앱 설치
 -npx create-react-app ./
   -->안되서 이름 직접입력해서 설치완료
 -npm run start 
@@ -106,7 +106,7 @@
   할 수 있도록 import "firebase/auth"; 
 	      import "firebase/database"; 
                   import "firebase/storage";    가져온다.
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 <인증처리>
 
 1.React Bootstrap 
@@ -315,7 +315,7 @@
  7)reducers 폴더의 index.js에 주석 달아놓은 import user~ 와 user 주석을 제거
  8)reducers 폴더안에 user_reducer.js 파일 생성후 타입을 가져옴
    import { SET_USER } from '../action/types';
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 <채팅페이지 구조>
 1채팅페이지 UI
@@ -542,3 +542,130 @@
 25)프로필 사진 새로 변경하고 바로바뀌는지 확인후, firebase DB 이미지URL
     gravatar 에서 firebasestorage로 바뀌고 저장됬는지 확인하기
 
+5.채팅룸 리스트 UI
+-ChatRooms.js 로 이동하여 function components를 class components로 변경
+1)div style  작성
+  -><div style={{
+                position: 'relative',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center'
+            }}> 
+2)아이콘 2가지를 가져온다
+  ->import { FaRegSmileWink } from 'react-icons/fa';
+     import { FaPlus } from 'react-icons/fa';
+3)아이콘 2가지를 적용하기 위해 코드 작성
+  -><FaRegSmileWink style={{  marginRight: 3 }}></FaRegSmileWink>
+           CHAT ROOMS {" "}(1)
+
+      <FaPlus style={{
+             position: 'absolute',
+             right: 0, 
+             cursor: 'pointer'
+       }}></FaPlus>
+4)모달 생성
+-기본UI
+-채팅룸 생성을 위한 모달창
+
+  ->리액트 부트스트랩  -> modal -> 코드 복붙
+  ->button과 modal 가져오기
+     import Modal from 'react-bootstrap/Modal';
+     import Button from 'react-bootstrap/Button';
+  ->show, handleClose 부분은 function으로 되어있는데 class로 수정
+           state ={ show: false }
+    handleClose = () => this.setState({ show: false });
+    handleShow = () => this.setState({ show: true })
+  ->복붙한 모달 부분 중 빨간줄 친 handleShow -> this.handleShow,
+                                             show -> this.state.show, 
+                                             handleClose -> this.handleClose 로 변경
+ ->모달 작동확인
+ ->버튼을 클릭하는게 아니라 + 모양을 클릭했을떄 작동하게 하기위해서
+     버튼부분을 지워주고 버튼안에있던 onClick 이벤트를 복사하여 <FaPlus>에 붙여넣는다
+  ->모달창 내용을 변경
+     #<Modal.Title> Create a cht room</Modal.Title> 
+     #<Modal.Body> 폼 추가 </Modal.Body>
+        -->리액트 부트스트랩 -> form -> 코드복붙
+        --->Form 을 가져오기
+              import Form from 'react-bootstrap/Form';
+   ->폼 내용을 변경
+       #<Form.Label>방 이름</Form.Label>
+       #<Form.Control type="text" placeholder="Enter a chat room name" />
+       #<Form.Control> 제거
+      
+       #<Form.Label>방 설명</Form.Label>
+       #<Form.Control type="text" placeholder="Enter a chat room description" />
+       #<Form.Group>~<Button>까지 제거
+   ->모달, 폼 변경 내용 확인
+
+6.채팅룸 생성
+-handleSubmit
+-chatRooms Collection
+-addChatRoom
+
+1)버튼 이름 변경
+   <Button variant="primary" onClick={this.handlesubmit}>
+                           Create
+2)<Form onSUbmit={ this.handleSubmit }>
+3)handlesubmit =(e) => {
+        e.preventDefault(); 
+      }
+4)state ={
+        show: false,
+        name: "",
+        description: "" 
+       }
+5)handleSubmit 추가
+   handlesubmit =(e) => {
+        e.preventDefault(); //버튼을 눌렀을떄 리프레쉬 되는거 막음
+
+        const { name , description } = this.state;
+
+        if(this.isFormValid( name, description )){
+            this.addChatRoom();
+        }
+    }
+6)유효성 검사 체크
+      isFormValid = (name, description) =>{  
+        name && description; 
+7)import { connect } from 'react-redux';
+8)const mapStateToProps = state =>{   //state에 들어있는것을 props로 바꿔서 사용
+    return {
+        user: state.user.currentUser
+    }
+  }    
+9)export default connect(mapStateToProps)(ChatRooms)
+10)    addChatRoom =() => {
+        const { name, description } = this. state;
+        const { user } = this.props;
+        const newChatRoom = {
+            id: ,
+            name: name,
+            description: description,
+            createdBY: {
+                name: user.displayName,
+                image: user.photoURL
+            }
+        }
+    }
+11)state ={ chatRoomsRef: firebase.dataebase().ref("chatRooms")  } 추가
+12)import firebase from '../../../firebase';
+13)addChatRoom = async () => { 
+    const key = this.state.chatRoomsRef.push().key;    로 추가및 변경
+14)try catch문 작성
+     try{
+            await this.state.chatRoomsRef.child(key).update(newChatRoom)
+            this.setState({
+                name: "",
+                description: "",
+                show: false
+            })
+        }
+        catch(error){
+            alert(error)
+        }
+    }
+15)모달창 방이름 부분의 <Fom.Control onChange={( e) => this.setState({ name: e.target.value })} 추가
+16)모달창 방설명 부분의 <Fom.Control onChange={( e) => this.setState({ description: e.target.value })} 추가
+17)앱에서 방을 만들고  firebase realtime datavase에 잘 들어갔는지 확인
+
+7. FIrebase에서 데이터 실시간으로 받기
