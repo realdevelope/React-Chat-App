@@ -106,7 +106,7 @@
   할 수 있도록 import "firebase/auth"; 
 	      import "firebase/database"; 
                   import "firebase/storage";    가져온다.
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 <인증처리>
 
 1.React Bootstrap 
@@ -264,12 +264,281 @@
   -> 에러는 안뜨지만 로그인된후 페이지이동 x
 
 11.인증된 이후의 페이지 이동 & useHistory
--
+-App.js 에서 useEffect() 를 이용해서 로그인된사람만 채팅페이지를 이용할 수 있게 구현 
+-import react, { useEffect } from 'react';
+-import friebase from './firebase';
+-function App() 안에 useEffect() 작성하고 안에 아래와 같이 작성
+ useEffect(() => {
+    
+    return () => {
+      firebase.auth().onAuthStateChanged(user => {  ////로그인된 사람의 정보
+        console.log('user', user);
+        
+        //로그인이 된 상태
+        if(user){
+          props.history.push("/");   //채팅페이지로 push
+        }
+        //로그인이 안된 상태
+        else{
+          props.history.push("login");  //로그인페이지로 push
+        }
+      })
+    }
+  }, [])
+-그 후 에러가 뜨는데 histroy객체가 없어서 뜸
+  -> App.js의 react-dom의 router 부분을 잘라내어 index.js에 가져온후
+      <App/>을 <Router></Router>로 감싸주면 해결됨
+-로그인 하면 챗팅페이지로 이동하는거 확인
 
 12.Redux 스토에 로그인 유저 정보 저장
--
+-로그인할떄 로그인정보를 받아오는데 그 받아온걸 리덕스 스토어에 저장하여
+  어디서든 손쉽게 사욯할 수 있게 할것!
+-redux flow대로 디스패치 -> 액션 -> 리듀서 -> 스토어 순으로 하나씩 시작
+-dispatch
+ 1)import { useDispatch, useSelector } from 'react-redux';
+   import { setUser } from './redux/actions/user_action';
+ 2)let dispatch = useDispatch(); 
+ 3)if문 안에 dispatch(setUser(user))  작성
+ 4)redux폴더 안의 user_actions.js 파일 생성 후 function 작성
+   import { SET_USER } from './types';
+
+    export function setUser(user){
+       return{
+          type: SET_USER,
+          payload: user
+       }
+     }
+ 5)redux폴더 안의 types.js 파일 생성 후 function 작성
+   export const SET_USER = "set_user";
+ 6)user_action.js에 setUser 정의해준걸 App.js 에서 가져온다
+   import { setUser } from './redux/actions/user_action';
+ 7)reducers 폴더의 index.js에 주석 달아놓은 import user~ 와 user 주석을 제거
+ 8)reducers 폴더안에 user_reducer.js 파일 생성후 타입을 가져옴
+   import { SET_USER } from '../action/types';
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+<채팅페이지 구조>
+1채팅페이지 UI
+1)ChatPage에 MainPanel 폴더 생성 후 MainPanel.js 파일 생성하고 rfce로 function componet 생성
+ ChatPage에 SidePanel 폴더 생성 후 SidePanel.js 파일 생성하고 rce로 class componet 생성
+2)Chatpage.js에 아래와 같이 작성
+  import React from 'react'
+  import SidePanel from './SidePanel/SidePanel';
+  import MainPanel from './MainPanel/MainPanel';
+
+  function ChatPage() {
+    return (
+        <div style={{ display: 'flex' }}>
+            <div style={{ width: '300px' }}>
+                <SidePanel></SidePanel>
+            </div>
+            <div style={{ width: '100%' }}>
+                <MainPanel></MainPanel>
+            </div>
+            </div>
+      )
+  }
+  export default ChatPage
+3)SidePanel폴더 안에 Chatrooms.js, DirectMessages.js, Favorited.js, SidePannel.js 
+   UserPannel.js 가 있도록 파일을 생성하고 rce로 class componet 생성
+4)ChatPage.js 에 가져온후 랜더해준다 -> 아래와 같이 작성
+  import React from 'react'
+  import UserPanel from './UserPanel';
+  import Favorited from './Favorited';
+  import ChatRooms from './ChatRooms';
+  import DirectMessages from './DirectMessages';
 
 
+  function SidePanel(props) {
+    return (
+        <div style={{
+            backgroundColor: "#7B83EB",
+            padding: '2rem',
+            minHeight: '100vh',
+            color: 'white',
+            minWidth: "275px"
+        }}>
+            <UserPanel currentUser={props.currentUser}></UserPanel>
+            <Favorited currentUser={props.currentUser}></Favorited>
+            <ChatRooms></ChatRooms>
+            <DirectMessages currentUser={props.currentUser}></DirectMessages>
+        </div>
+      )
+  }
+  export default SidePanel
+5)MainPannel 안에 MainPannel.js, Message.js, MeesageForm.js, MessageHeader.js 가
+  있도록 파일을 생성하고 각파일에  rfce로 function component 를 생성
+6)MainPanel.js에 가져온후 랜더해준다 -> 아래와 같이 작성
+  import React, { Component } from 'react'
+  import Meessage from './Message';
+  import MessageForm from './MessageForm';
+  import MessageHeader from './MessageHeader';
 
+  export class MainPanel extends Component {
+    render() {
+        return (
+            <div style={{ padding: '2rem 2rem 0 2rem '}}>
 
+                <MessageHeader></MessageHeader>
+
+                <div style={{
+                    width: '100%',
+                    height: '450px',
+                    border: '.2rem solid #ececec',
+                    borderRadius: '4px',
+                    padding: '1rem',
+                    marginBottom: '1rem',
+                    overflowY: 'auto'
+                }}>
+                </div>
+                 
+                 <MessageForm></MessageForm>
+            </div>
+          )
+      }
+  }
+  export default MainPanel
+
+2.User Pannel 기본 구조 만들기
+-Logo
+1)react icons 홈페이지에서 chat 중 택1
+2)UserPannerl.js에 가져온다
+    import { IoIosChatbubbles}  from 'react-icons/io'
+    export default function UserPanel() {
+    return (
+        <div>
+            {/* Logo */}
+            <h3 style={{ color: 'white' }}>
+            <IoIosChatbubbles></IoIosChatbubbles> {" "} Chat App
+            </h3>
+        </div>
+      )
+   }
+3)user Dropdown을 위해서 react-bootstrap사이트 -> component -> dropdown 의 코드를 복붙
+  <div style={{display: 'flex', marginsBootom: '1rem' }}>
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Dropdown Button
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                    </Dropdown.Menu>
+
+                </Dropdown>
+            </div>
+4)user img도 react-bootstrap 사이트에서 복붙 (동그란 이미지)
+  -><div style={{display: 'flex', marginsBootom: '1rem' }}> 아래에 아래처럼 입력
+            <Image src="holder.js/171x180" roundedCircle 
+                   style={{ width: '30p', height: '30p', marginTop: '3px'}}></Image>
+5)dropdown의 variant="success" 제거 후 스타일 작성
+6)dropdown 우리의 앱에 맞게 제거 및 작성
+7)유저이미지와 유저 정보 redux store에서 가져와서 넣어주기
+
+3.로그아웃, 리덕스 스토어에서 유저정보 지우기
+1)Dropdown 의 로그아웃 href를 onClick으로 변경
+  onClick={handleLogout}
+2)위의 코드를 실행하기위해 정의
+  const handleLogout =() => {
+         firebase.auth().signOut()
+  }
+3)로그아웃 클릭시 로그인페이지로 전환이 되나
+  리덕스 스토어에는 아직 유저정보가 남아있으므로 App.js의 로그인안 안된 상태의
+  else 안의 dispatch(clearUser())로 수정하고 user action부분에 추가시켜줌
+  import { setUser, clearUser} 
+4)user_action.js 에 clearUser 삽입 후 import 에도 추가
+  export function clearUser(){
+      return{
+          type: CLEAR_USER,
+      }
+  }
+5)types.js에 CLEAR_USER 정의
+  export const CLEAR_USER = "clear_user";
+6)user_reducer.js 에 CLEAR_USER improt 추가하고, case 문 추가
+  case CLEAR_USER:
+            return {
+                ...state,
+                currentUser: null,
+                isLoading: false
+            }
+7)리덕스 state 확인
+
+4.프로필 이미지 수정
+-react -> firebase Storage -> firebaseDB
+-프로필 사진 변경 버튼을 누르면 업로드패널 나오게 
+-firebase Storage 사용할 수 있게 설정
+-이미지 클릭후 Firebase Storage 에 저장
+-Auth 서비스 프로필 수정
+-리덕스에서 유저 이미지 교체
+-데이터베이스에 이미지 URL 저장 
+1)userPanel.js 에
+  <input style={{ display: 'none' }} type="file"></input> 
+   ->디자인적으로 어울리지 않아 숨기고 use Ref로 onClick 할것임
+2)useRef를 import 시켜준다
+3)const inputOpenImageRef = useRef(); 로 정의
+4) 1)의 input 안에 ref = { inputOpenImageRef } 넣어주고 가장 아래페이지로 이동시킴
+5)프로필 사진 변경 부분에 href를 onClick 로 바꿔준다
+  ->onClick={ handleOpenImageRef }
+6)위의 코드를 사용하기 위해 정의
+  ->const handleOpenImageRef = () => {
+        inputOpenImageRef.current.click();
+    }
+7)이미지만 업로드 할 수 있게 input 태그안에 추가
+  ->accept ="image/jpeg, image/png" 
+8)이미지를 클릭하면 firebase로 보내주기
+  ->input 태그 안에 onChange={handleUpload}  추가하고
+  ->
+9)firebase 사이트 -> storage -> start -> next ->next -> asia-northeast1 (가까운곳 체크, 가까울수록 빠른 서비스를 제공받을 수 있음) 
+10)npm install mime-types --save
+11)npm run start
+12)import mime from 'mime-types';
+13)const metadata = {contentType: mime.lookup(file.name)};
+
+        try{
+            //스토리지에 파일 저장하기
+            let uploadTaskSnapshot = await firebase.storage().ref()
+            .child(`user_image/${user.uid}`)
+            .put(file, metadata)
+	
+	consol.log('uploadTaskSnapshot', uploadTaskSnapshot);
+14)아무사진이나 업로드해보고 storage가서 잘 저장됬는지 확인
+15)개발자모드에서 photoURL이 계쏙 gravatar에서 가져온 url로 그대로 이기 떄문에
+    이부분을 새로 업로드한 url로 변경
+    ->13)번의 try구문 아래에 consol.log 지우고 아래으 코드 삽입
+        let downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+            console.log('downloadURL', downloadURL);
+
+            await firebase.auth().currentUser.updateProfile({
+                photoURL: downloadURL
+            })
+16)리덕스 state/user/currentUser/photoURL 도 downloadURL로 변경해준다
+   ->dispatchEvent(setPhotoURL(downloadURL))
+17)import { useSelecor, useDispatch } from 'react-redux';
+18)const dispatch = useDispatch();
+19)import {setPhotoURL} from '../../../redux/actions/user_action';
+20)user_action.js 에  아래 function 추가 하고 import {SET_PHOTO_URL } 추가
+    export function setPhotoURL(photoURL){
+    return{
+        type: SET_PHOTO_URL,
+        payload : photoURL
+      }
+  }
+21)types.js에  export const SET_PHOTO_URL = "set+photo_url";  
+22)user_reducer.js에 const initialUserState = { SET_PHOTO_URL } 추가하고
+    switch문의 case문 추가
+    -> case SET_PHOTO_URL:
+            return {
+                ...state,
+                currentUser: { ...state.currentUser, photoURL: action.payload },
+                isLoading: false
+            }
+23)다시 UserPannel.js로 돌아와서  try구문에 데이터베이스 유저 이미지 수정
+    ->  await firebase.database().ref("users")
+                .child(user.uid)
+                .update({ image: downloadURL })  추가
+24)catch(error){ alert(error); }
+25)프로필 사진 새로 변경하고 바로바뀌는지 확인후, firebase DB 이미지URL
+    gravatar 에서 firebasestorage로 바뀌고 저장됬는지 확인하기
 
