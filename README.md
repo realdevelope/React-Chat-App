@@ -40,6 +40,6 @@
 4. 프로필 이미지 수정 - firebase, 리덕스스토어 데이터변경 및 DB에 저장✔
 5. 채팅룸 리스트 UI✔
 6. 채팅 룸 생성✔
-7. firebase에서 데이터 실시간으로 받기
-8. Set current chat room
-9. Clean up event listener
+7. firebase에서 데이터 실시간으로 받기✔
+8. Set current chat room✔
+9. Clean up event listener✔
