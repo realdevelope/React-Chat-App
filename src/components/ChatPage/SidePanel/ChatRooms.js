@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import firebase from '../../../firebase';
+import { setCurrentChatRoom } from '../../../redux/actions/chatRoom_action';
 
 export class ChatRooms extends Component {
 
@@ -13,10 +14,35 @@ export class ChatRooms extends Component {
         show: false,
         name: "",
         description: "",
-        chatRoomsRef: firebase.database().ref("chatRooms")
+        chatRoomsRef: firebase.database().ref("chatRooms"),
+        chatRooms: [],
+        firstLoad: true
     }
 
-    handleClose = () => this.setState({ show: false });
+    componentDidMount(){
+        this.AddChatRoomsListeners();
+    }
+
+    setFirstChatRoom = () => {
+        const firstChatRoom = this.state.chatRooms[0]
+        if(this.state.firstLoad && this.state.chatRooms.length > 0){
+            this.props.dispatch(setCurrentChatRoom(firstChatRoom))
+        }
+        this.setState({ firstLoad: false })
+    }
+
+
+    AddChatRoomsListeners = () =>{
+        let chatRoomsArray = [];
+
+        this.state.chatRoomsRef.on("child_added", DataSnapshot => {
+            chatRoomsArray.push(DataSnapshot.val());
+            //console.log("chatRoomsArray", chatRoomsArray)
+            this.setState({ chatRooms: chatRoomsArray }, () => this.setFirstChatRoom());
+        })
+    }
+
+    handleClose = () => this.setState({ show: false })
     handleShow = () => this.setState({ show: true })
     handlesubmit =(e) => {
         e.preventDefault(); //버튼을 눌렀을때 리프레쉬 되는거 막음
@@ -60,6 +86,17 @@ export class ChatRooms extends Component {
     isFormValid = (name, description) =>   //유효성검사체크 - 단순하게 있기만하면!!!
         name && description; 
 
+    chageChatRoom = (room) => {
+        this.props.dispatch(setCurrentChatRoom(room))
+    }
+
+        renderChatRooms = (chatRooms) => 
+        chatRooms.length > 0 &&
+        chatRooms.map(room => (
+            <li key={room.id}
+                onClick={() => this.onChangeChatRoom(room)}
+             >#{room.name}</li>
+        ))
 
     render() {
         return (
@@ -82,6 +119,15 @@ export class ChatRooms extends Component {
                         cursor: 'pointer'
                     }}></FaPlus>
                 </div>
+
+                    <ul style={{ 
+                        listStyleType: 'none',
+                        padding: 0
+                        }}>
+
+                        {this.renderChatRooms(this.state.chatRooms)}
+                    </ul>
+
 
                 {/* ADD CHAT ROOM MODAL */}
 
