@@ -16,17 +16,24 @@ export class ChatRooms extends Component {
         description: "",
         chatRoomsRef: firebase.database().ref("chatRooms"),
         chatRooms: [],
-        firstLoad: true
+        firstLoad: true,
+        activeChatRoomId: ""
     }
 
     componentDidMount(){
-        this.AddChatRoomsListeners();
+        this.AddChatRoomsListeners();   
     }
+
+    componentWillUnmount(){
+        this.state.chatRoomsRef.off();      //컴포넌트가 제거되었을 때 Listener도 제거
+    }
+
 
     setFirstChatRoom = () => {
         const firstChatRoom = this.state.chatRooms[0]
         if(this.state.firstLoad && this.state.chatRooms.length > 0){
             this.props.dispatch(setCurrentChatRoom(firstChatRoom))
+            this.setState({ activeChatRoomId: firstChatRoom.id })
         }
         this.setState({ firstLoad: false })
     }
@@ -88,13 +95,15 @@ export class ChatRooms extends Component {
 
     chageChatRoom = (room) => {
         this.props.dispatch(setCurrentChatRoom(room))
+        this.setState({ activeChatRoomId: room.id })
     }
 
         renderChatRooms = (chatRooms) => 
         chatRooms.length > 0 &&
         chatRooms.map(room => (
             <li key={room.id}
-                onClick={() => this.onChangeChatRoom(room)}
+                style={{ backgroundColor: room.id === this.state.activeChatRoomId && "#ffffff45"}}
+                onClick={() => this.ChangeChatRoom(room)}
              >#{room.name}</li>
         ))
 
