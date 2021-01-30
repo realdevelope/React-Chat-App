@@ -107,7 +107,7 @@ export class ChatRooms extends Component {
              >#{room.name}</li>
         ))
 
-    render() {
+    render() { 
         return (
             <div>
                 <div style={{
