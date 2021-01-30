@@ -12,7 +12,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-function MessageHeader() {
+function MessageHeader(handleSearchChange) {
     return (
         <div style ={{
             width: '100%',
@@ -32,6 +32,7 @@ function MessageHeader() {
                         <InputGroup.Text id="basic-addon1"><AiOutlineSearch></AiOutlineSearch></InputGroup.Text>
                     </InputGroup.Prepend>
                     <FormControl
+                        onChange={ handleSearchChange }
                         placeholder="Search Messages"
                         aria-label="Search"
                         aria-describedby="basic-addon1"
@@ -39,9 +40,9 @@ function MessageHeader() {
                 </InputGroup>
             </Col>
         </Row>
-            <div style={{ display:'flex', justifyContent: 'flex-end'}}>
+            <div style={{ display:'flex', justifyContent: 'flex-end' }}>
                 <p>
-                    <Image src=""></Image>{" "}user name
+                    <Image src=""></Image> {" "}user name
                 </p>
 
             </div>

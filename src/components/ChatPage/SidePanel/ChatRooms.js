@@ -7,21 +7,24 @@ import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import firebase from '../../../firebase';
 import { setCurrentChatRoom } from '../../../redux/actions/chatRoom_action';
+import Badge from 'react-bootstrap/Badge';
 
 export class ChatRooms extends Component {
 
-    state ={
+    state = {
         show: false,
         name: "",
         description: "",
         chatRoomsRef: firebase.database().ref("chatRooms"),
+        messagesRef: firebase.database().ref("messages"),
         chatRooms: [],
         firstLoad: true,
-        activeChatRoomId: ""
+        activeChatRoomId: "",
+        notifications: []
     }
 
-    componentDidMount(){
-        this.AddChatRoomsListeners();   
+    componentDidMount() {
+        this.AddChatRoomsListeners();
     }
 
     componentWillUnmount(){
@@ -31,11 +34,13 @@ export class ChatRooms extends Component {
 
     setFirstChatRoom = () => {
         const firstChatRoom = this.state.chatRooms[0]
-        if(this.state.firstLoad && this.state.chatRooms.length > 0){
+        
+        if (this.state.firstLoad && this.state.chatRooms.length > 0) {
             this.props.dispatch(setCurrentChatRoom(firstChatRoom))
             this.setState({ activeChatRoomId: firstChatRoom.id })
         }
         this.setState({ firstLoad: false })
+
     }
 
 
@@ -51,7 +56,8 @@ export class ChatRooms extends Component {
 
     handleClose = () => this.setState({ show: false })
     handleShow = () => this.setState({ show: true })
-    handlesubmit =(e) => {
+   
+    handlesubmit = (e) => {
         e.preventDefault(); //버튼을 눌렀을때 리프레쉬 되는거 막음
 
         const { name , description } = this.state;
@@ -65,26 +71,26 @@ export class ChatRooms extends Component {
         const key = this.state.chatRoomsRef.push().key;  // auto-generated key 자동으로 생성된 키를 넣어주고 그 key를 id에 넣음
 
         const { name, description } = this.state;
-        const { user } = this.props;
+        const { user } = this.props
         const newChatRoom = {
             id: key,
             name: name,
             description: description,
-            createdBY: {
+            createdBy: {
                 name: user.displayName,
                 image: user.photoURL
             }
         }
 
-        try{
+        try {
             await this.state.chatRoomsRef.child(key).update(newChatRoom)
             this.setState({
                 name: "",
                 description: "",
                 show: false
             })
-        }
-        catch(error){
+        } 
+        catch (error) {
             alert(error)
         }
     }
@@ -94,7 +100,7 @@ export class ChatRooms extends Component {
         name && description; 
 
     chageChatRoom = (room) => {
-        this.props.dispatch(setCurrentChatRoom(room))
+        this.props.dispatch(setCurrentChatRoom(room));
         this.setState({ activeChatRoomId: room.id })
     }
 
@@ -104,7 +110,11 @@ export class ChatRooms extends Component {
             <li key={room.id}
                 style={{ backgroundColor: room.id === this.state.activeChatRoomId && "#ffffff45"}}
                 onClick={() => this.ChangeChatRoom(room)}
-             >#{room.name}</li>
+             >#{room.name}
+                 <Badge style={{ float: 'right', marginTop: '4px' }} variant="danger">
+                    1
+                </Badge>
+             </li>
         ))
 
     render() { 
@@ -181,7 +191,8 @@ export class ChatRooms extends Component {
 
 const mapStateToProps = state => {   //state에 들어있는것을 props로 바꿔서 사용
     return {
-        user: state.user.currentUser
+        user: state.user.currentUser,
+        chatRoom: state.chatRoom.currentChatRoom
     }
 }    
 

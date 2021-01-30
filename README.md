@@ -43,3 +43,13 @@
 7. firebase에서 데이터 실시간으로 받기✔
 8. Set current chat room✔
 9. Clean up event listener✔
+
+`-채팅방`
+1. 메세지 Header, Body, Form UI 제작✔
+2. 메세지 저장하기✔
+3. 메세지 보여주기✔
+4. 메세지 컴포넌트 생성✔
+5. 이미지 파일 업로드✔
+6. Progress Bar✔
+7. 업로드한 파일 메세지를 상대가 볼 수 있게✔
+8. 검색으로 메세지 내용 찾기✔ -에러해결중

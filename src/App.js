@@ -17,7 +17,7 @@ function App(props) {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => { ////로그인된 사람의 정보
-      console.log('user', user)
+      //console.log('user', user)
 
       //로그인이 된 상태
       if (user) {
