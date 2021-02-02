@@ -1,8 +1,7 @@
 body {
   background: #0e101c;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 .auth-wrapper {
@@ -24,14 +23,13 @@ body {
   padding-bottom: 10px;
   border-bottom: 1px solid rgb(79, 98, 148);
 }
-
-.auth-wrapper.form {
+.auth-wrapper .form {
   background: #0e101c;
   max-width: 400px;
   margin: 0 auto;
 }
 
-.auth-wrapper p {
+.auth-wrapper .p {
   color: #bf1650;
 }
 
@@ -55,7 +53,7 @@ body {
   line-height: 2;
   text-align: left;
   display: block;
-  margin: 5px 0;
+ margin: 5px 0 ;
   font-size: 14px;
   font-weight: 200;
 }
@@ -73,7 +71,7 @@ body {
   letter-spacing: 10px;
 }
 
-.message-form-button{
+.message-form-button {
   background: #7A84EB;
   color: white;
   text-transform: uppercase;
@@ -85,10 +83,9 @@ body {
   letter-spacing: 10px;
 }
 
-.message-form-button:hover{
+.message-form-button:hover {
   background: #636ee6;
 }
-
 
 .auth-wrapper button[type="submit"]:hover,
 .auth-wrapper input[type="submit"]:hover {
@@ -129,10 +126,10 @@ body {
   border-radius: 4px;
 }
 
-.auth-wrapper hr {
+hr {
   margin-top: 30px;
 }
- 
+
 .auth-wrapper button {
   display: block;
   appearance: none;
@@ -143,4 +140,3 @@ body {
   padding: 10px 20px;
   border-radius: 4px;
 }
-
