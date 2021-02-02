@@ -13,7 +13,7 @@ import { setUser, clearUser } from './redux/actions/user_action';
 function App(props) {
   let history = useHistory();
   let dispatch = useDispatch();
-  const isLoading = useSelector(state => state.user.inLoading)  //스토어에 있는 isLoading 을 사용하기위해 useSelector을 사용하여 가져옴
+  const isLoading = useSelector(state => state.user.isLoading);  //스토어에 있는 isLoading 을 사용하기위해 useSelector을 사용하여 가져옴
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => { ////로그인된 사람의 정보

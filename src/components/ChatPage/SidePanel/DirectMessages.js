@@ -3,66 +3,38 @@ import React, { Component } from 'react'
 import { FaRegSmile } from 'react-icons/fa';
 import firebase from '../../../firebase';
 import { connect } from 'react-redux';
-import {setCurrentChatRoom, setPrivateChatRoom} 
+import { setCurrentChatRoom, setPrivateChatRoom } 
         from '../../../redux/actions/chatRoom_action';
 
 export class DirectMessages extends Component {
 
     state ={
         usersRef: firebase.database().ref("users"),
-        users: []   //이니셜스테이트 공백으로 지정
+        users: [],   //이니셜스테이트 공백으로 지정
         activeChatRoom: ""
     }
 
     componentDidMount() {
-        if(this.props.user){
+        if (this.props.user) {
             this.addUsersListeners(this.props.user.uid)
         }
     }
+
 
     addUsersListeners = (currentUserId) => {
         const { usersRef } = this.state;
         let usersArray = [];
         usersRef.on("child_added", DataSnapshot => {
-            if(this.props.user.uid !== DataSnapshot.key){
-                let user = DataSnapshot.val()
-                user["uid"] = DataSnapshot.key
-                user["status"] = "offline";     //접속유무
-
+            if (currentUserId !== DataSnapshot.key) {
+                let user = DataSnapshot.val();
+                user["uid"] = DataSnapshot.key;
+                user["status"] = "offline";
                 usersArray.push(user)
                 this.setState({ users: usersArray })
             }
         })
     }
 
-    renderDirectMessages = (users) => 
-        users.length > 0 &&
-        users.map(user => (  
-            <li key={ users.uid } onClick={() => this.changeChatRoom(user)}>
-               # {user.name}
-            </li>
-        ))
-
-    getChatRoomId = (userId) => {
-        const currentUserId = this.props.user.uid
-
-        return userId > currentUserId ? `${userId} / ${currentUserId}` : `${currentUserId}/${userId}`
-    }
-
-    changeChatRoom = (user) => {
-        const chatRoomId = this.getChatRoomId(user.uid);
-        const chatRoomData = {
-            id: chatRoomId,
-            name: user.name
-        }
-
-        this.props.dispatch(setCurrentChatRoom(chatRoomData));
-        this.props.dispatch(setPrivateChatRoom(true));
-        this.setActiveChatRoom(user.uid);
-
-    setActiveChatRoom = (userId) => {
-        this.setState({ activeChatRoom: userId })
-    }
 
     renderDirectMessages = users =>
         users.length > 0 &&
@@ -78,7 +50,46 @@ export class DirectMessages extends Component {
         ))
 
 
-    render() {
+    getChatRoomId = (userId) => {
+        const currentUserId = this.props.user.uid
+
+        return userId > currentUserId  ? `${userId}/${currentUserId}` : `${currentUserId}/${userId}`
+    }
+
+
+    changeChatRoom = (user) => {
+        const chatRoomId = this.getChatRoomId(user.uid);
+        const chatRoomData = {
+            id: chatRoomId,
+            name: user.name
+        }
+
+        this.props.dispatch(setCurrentChatRoom(chatRoomData));
+        this.props.dispatch(setPrivateChatRoom(true));
+        this.setActiveChatRoom(user.uid);
+    }
+
+
+    setActiveChatRoom = (userId) => {
+        this.setState({ activeChatRoom: userId })
+    }
+
+
+    renderDirectMessages = users =>
+        users.length > 0 &&
+        users.map(user => (
+            <li key={user.uid}
+                style={{
+                    backgroundColor: user.uid === this.state.activeChatRoom
+                        && "#ffffff45"
+                }}
+                onClick={() => this.changeChatRoom(user)}>
+                # {user.name}
+            </li>
+        ))
+
+
+        render() {
             const { users } = this.state;
             return (
                 <div>
@@ -93,11 +104,12 @@ export class DirectMessages extends Component {
             )
         }
     }
-    
-    const mapStateToProps = state => {
-        return {
-            user: state.user.currentUser
-        }
+
+
+const mapStateToProps = state => {
+    return {
+        user: state.user.currentUser
     }
-    
-    export default connect(mapStateToProps)(DirectMessages);
+}
+
+export default connect(mapStateToProps)(DirectMessages);

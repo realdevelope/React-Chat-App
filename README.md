@@ -44,7 +44,7 @@
 8. Set current chat room✔
 9. Clean up event listener✔
 
-`-채팅방`
+`-채팅방 (public)`
 1. 메세지 Header, Body, Form UI 제작✔
 2. 메세지 저장하기✔
 3. 메세지 보여주기✔
@@ -53,3 +53,10 @@
 6. Progress Bar✔
 7. 업로드한 파일 메세지를 상대가 볼 수 있게✔
 8. 검색으로 메세지 내용 찾기✔ -에러해결중
+
+`DM (private)`
+1. Side Panel DM UI✔
+2. User 목록 가져오기✔
+3. 방 생성✔
+4. 방 클릭시 이동, 알림, 표시✔
+5. Private, Public DB 구분✔

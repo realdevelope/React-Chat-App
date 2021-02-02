@@ -54,7 +54,7 @@ export class MainPanel extends Component {
         let messagesArray = [];
         this.state.messagesRef.child(chatRoomId).on("child_added", DataSnapshot => {
             messagesArray.push(DataSnapshot.val());
-            console.log('messageArray', messagesArray)
+            console.log('messageAre', messagesArray)
             this.setState({
                 messages: messagesArray,
                 messagesLoading: false
@@ -79,30 +79,30 @@ export class MainPanel extends Component {
             //console.log('searchTerm', searchTerm)
             return (
                 <div style={{ padding: '2rem 2rem 0 2rem' }}>
-    
-                    <MessageHeader handleSearchChange={this.handleSearchChange} />
-    
-                    <div style={{
-                        width: '100%',
-                        height: '450px',
-                        border: '.2rem solid #ececec',
-                        borderRadius: '4px',
-                        padding: '1rem',
-                        marginBottom: '1rem',
-                        overflowY: 'auto'
-                    }}>
-                        {searchTerm ?
-                            this.renderMessages(searchResults)
-                            :
-                            this.renderMessages(messages)
-                        }
-    
-                        {}
-                    </div>
-    
-                    <MessageForm />
-    
+
+                <MessageHeader handleSearchChange={this.handleSearchChange} />
+
+                <div style={{
+                    width: '100%',
+                    height: '450px',
+                    border: '.2rem solid #ececec',
+                    borderRadius: '4px',
+                    padding: '1rem',
+                    marginBottom: '1rem',
+                    overflowY: 'auto'
+                }}>
+                    {searchTerm ?
+                        this.renderMessages(searchResults)
+                        :
+                        this.renderMessages(messages)
+                    }
+
+                    {}
                 </div>
+
+                <MessageForm />
+
+            </div>
             )
         }
     }
