@@ -6,14 +6,15 @@ import { FaLock } from 'react-icons/fa';
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
-import { AiOutlineSearch } from 'react-icons/ai';
-import Image from 'react-bootstrap/Image';
+import { AiOutlineSearch } from 'react-icons/ai';// eslint-disable-next-line
+import Image from 'react-bootstrap/Image'
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux';  //함수형 컴포넌트기 때문에 redux-hook 사용
 import { FaLockOpen } from 'react-icons/fa';
 import firebase from '../../../firebase';
+import { Media } from 'react-bootstrap';
 
 function MessageHeader({ handleSearchChange }) {
 
@@ -22,6 +23,7 @@ function MessageHeader({ handleSearchChange }) {
     const [isFavorited, setIsFavorited] = useState(false);
     const usersRef = firebase.database().ref("users");
     const user = useSelector(state => state.user.currentUser);
+    const userPosts = useSelector(state => state.chatRoom.userPosts);
 
     useEffect(() => {
         if (chatRoom && user) {
@@ -64,15 +66,37 @@ function MessageHeader({ handleSearchChange }) {
                     [chatRoom.id]: {
                         name: chatRoom.name,
                         description: chatRoom.description,
-                        createdBy: {
-                            name: chatRoom.createdBy.name,
-                            image: chatRoom.createdBy.image
+                        createdBY: {
+                            name: chatRoom.createdBY.name,
+                            image: chatRoom.createdBY.image
                         }
                     }
                 })
             setIsFavorited(prev => !prev)
         }
     }
+
+    const renderUserPosts = (userPosts) =>
+        Object.entries(userPosts)       //sort메소드를 사용하기 위해서 배열로 작성
+            .sort((a, b) => b[1].count - a[1].count)
+            .map(([key, val], i) => (
+                <Media key={i}>
+                    <img
+                        style={{ borderRadius: 25 }}
+                        width={48}
+                        height={48}
+                        className="mr-3"
+                        src={val.image}
+                        alt={val.name}
+                    />
+                <Media.Body>
+                    <h6>{key}</h6>  {/*이름*/}
+                    <p>
+                        {val.count} 개  
+                    </p>
+                </Media.Body>
+            </Media>
+        ))
 
     return (
         <div style={{
@@ -125,22 +149,28 @@ function MessageHeader({ handleSearchChange }) {
                         </InputGroup>
                     </Col>
                 </Row>
+                            {!isPrivateChatRoom  &&
+                            
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <p>
-                        <Image src="" /> {" "}user name
+                        <Image src={chatRoom && chatRoom.createdBY.image}
+                            roundedCircle style={{ width: '30px', height: '30px' }}
+                        /> {" "} {chatRoom && chatRoom.createdBY.name}
                     </p>
                 </div>
+                            }
+
                 <Row>
                     <Col>
                         <Accordion>
                             <Card>
                                 <Card.Header style={{ padding: '0 1rem' }}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Click me!
+                                        Description
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
-                                    <Card.Body>Hello! I'm the body</Card.Body>
+                                    <Card.Body>{ chatRoom && chatRoom.description }</Card.Body>
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>
@@ -150,11 +180,11 @@ function MessageHeader({ handleSearchChange }) {
                             <Card>
                                 <Card.Header style={{ padding: '0 1rem' }}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Click me!
+                                        Posts Count
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
-                                    <Card.Body>Hello! I'm the body</Card.Body>
+                                    <Card.Body> { userPosts && renderUserPosts(userPosts) } </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>

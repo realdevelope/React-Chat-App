@@ -3,19 +3,19 @@ import Media from 'react-bootstrap/Media'
 import moment from 'moment' //~몇분전 을 쉽게 나태낼 수 있음
 
 function Message({ message, user }) {
-
     const timeFromNow = timestamp => moment(timestamp).fromNow();   //moment 에서 제공하는 fromnow()
 
     const isImage = message => {
         return message.hasOwnProperty("image") && !message.hasOwnProperty("content");
     }
+
     const isMessageMine = (message, user) => {
         if(user){
             return message.user.id === user.uid
         }
     }
 
-    return (
+return (
         <Media style={{ marginBottom: '3px' }}>
             <img
                 style={{ borderRadius: '10px' }}

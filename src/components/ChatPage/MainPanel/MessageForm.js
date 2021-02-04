@@ -19,6 +19,7 @@ function MessageForm() {
     const storageRef = firebase.storage().ref();
     const [percentage, setPercentage] = useState(0)
     const isPrivateChatRoom = useSelector(state => state.chatRoom.isPrivateChatRoom)
+    const typingRef = firebase.database().ref("typing");
 
     const handleChange = (event) => {
         setContent(event.target.value)
@@ -53,6 +54,9 @@ function MessageForm() {
         //firebase에 메시지를 저장하는 부분 
         try {
             await messagesRef.child(chatRoom.id).push().set(createMessage())
+
+            typingRef.child(chatRoom.id).child(user.uid).remove()    //메세지를 보낸후에 타이핑 데이터를 타이핑DB에서 지울 수 있음
+
             setLoading(false)
             setContent("")
             setErrors([])
@@ -111,25 +115,34 @@ function MessageForm() {
                         })
                 }
             )
-
-        } catch (error) {
+        } 
+        catch (error) {
             alert(error)
         }
     }
+
+    const handleKeyDown =() => {
+        if(content) {
+            typingRef.child(chatRoom.id).child(user.uid).set(user.displayName)  //타이핑 테이블에 넣음
+        }
+        else{
+            typingRef.child(chatRoom.id).child(user.uid).remove();  //테이핑 테이블에 넣은걸 지움
+        }
+    }
+
 
     return (
         <div>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                     <Form.Control
+                        onKeyDown={handleKeyDown}
                         value={content}
                         onChange={handleChange}
                         as="textarea"
                         rows={3} />
                 </Form.Group>
             </Form>
-
-            {console.log('percentage', percentage)}
 
             {
                 !(percentage === 0 || percentage === 100) &&
@@ -178,4 +191,5 @@ function MessageForm() {
 }
 
 export default MessageForm
+
 

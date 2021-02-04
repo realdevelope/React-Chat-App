@@ -136,7 +136,7 @@ export class ChatRooms extends Component {
             id: key,
             name: name,
             description: description,
-            createdBy: {
+            createdBY: {
                 name: user.displayName,
                 image: user.photoURL
             }
@@ -189,7 +189,6 @@ export class ChatRooms extends Component {
                 count = notification.count;
             }
         })
-
         if(count > 0) return count;
     }
 
@@ -222,12 +221,13 @@ export class ChatRooms extends Component {
                     CHAT ROOMS {" "}(1)
 
                     <FaPlus
-                    onClick={this.handleShow} 
-                    style={{
-                        position: 'absolute',
-                        right: 0, 
-                        cursor: 'pointer'
-                    }}></FaPlus>
+                        onClick={this.handleShow} 
+                        style={{
+                            position: 'absolute',
+                            right: 0, 
+                            cursor: 'pointer'
+                        }}>
+                    </FaPlus>
                 </div>
 
                     <ul style={{ 
@@ -273,7 +273,6 @@ export class ChatRooms extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
 
             </div>
         )

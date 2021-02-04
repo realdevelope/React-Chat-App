@@ -54,7 +54,6 @@ export class Favorited extends Component {
                 })
                 this.setState({ favoritedChatRooms: filteredChatRooms })
             })
-
     }
 
     changeChatRoom = (room) => {
@@ -100,3 +99,4 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(Favorited);
+
