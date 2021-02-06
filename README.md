@@ -1,10 +1,13 @@
 ## React, Firebase - 채팅 어플리케이션 
 #1월 한달 프론트앤드 기초부터 바로잡기 프로젝트 17/30<br>
-#AtoZ 첫 서비스 배포 도전 (진행중..)
+#AtoZ 첫 서비스 배포 도전 (진행중.. -(90%완료))
 
 ## 학습환경
 #vsc
 #Firebase
+
+## 미리보기
+#02/06 배포 https://react-react-chat-app.web.app
 
 ## 학습내용
 
