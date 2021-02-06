@@ -123,9 +123,9 @@ function MessageHeader({ handleSearchChange }) {
                             {!isPrivateChatRoom &&
                                 <span style={{ cursor: 'pointer' }} onClick={handleFavorite}>
                                     {isFavorited ?
-                                        <MdFavorite style={{ marginBottom: '10px' }} />
+                                        <MdFavorite style={{ borderBottom: '10px' }} />
                                         :
-                                        <MdFavoriteBorder style={{ marginBottom: '10px' }} />
+                                        <MdFavoriteBorder style={{ borderBottom: '10px' }} />
                                     }
                                 </span>
                             }

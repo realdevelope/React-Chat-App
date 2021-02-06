@@ -82,7 +82,7 @@ export class Favorited extends Component {
             <div>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                     <FaRegSmileBeam style={{ marginRight: '3px' }} />
-                FAVORITED (1)
+                    FAVORITED ({favoritedChatRooms.length})
             </span>
                 <ul style={{ listStyleType: 'none', padding: '0' }}>
                     {this.renderFavoritedChatRooms(favoritedChatRooms)}

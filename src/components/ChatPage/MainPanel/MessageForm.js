@@ -121,7 +121,14 @@ function MessageForm() {
         }
     }
 
-    const handleKeyDown =() => {
+
+    const handleKeyDown = (event) => {
+
+        //enter키로 메세지 보내는 부분
+       if(event.ctrlKey && event.keyCode === 13){
+           handleSubmit();
+       }
+
         if(content) {
             typingRef.child(chatRoom.id).child(user.uid).set(user.displayName)  //타이핑 테이블에 넣음
         }

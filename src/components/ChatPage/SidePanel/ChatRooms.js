@@ -65,7 +65,7 @@ export class ChatRooms extends Component {
             if (this.props.chatRoom) {
                 this.handleNotification(    //핸들링 부분
                     chatRoomId,
-                    this.props.chatRoom.id,
+                    this.props.chatRoom.id, //현재 채팅룸 아이디
                     this.state.notifications,
                     DataSnapshot
                 )
@@ -208,6 +208,8 @@ export class ChatRooms extends Component {
 
 
     render() { 
+        const { chatRooms } = this.state;
+
         return (
             <div>
                 <div style={{
@@ -218,7 +220,7 @@ export class ChatRooms extends Component {
                 }}> 
 
                     <FaRegSmileWink style={{  marginRight: 3 }}></FaRegSmileWink>
-                    CHAT ROOMS {" "}(1)
+                    CHAT ROOMS {" "} ({chatRooms.length})
 
                     <FaPlus
                         onClick={this.handleShow} 

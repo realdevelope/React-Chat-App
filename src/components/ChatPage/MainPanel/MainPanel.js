@@ -7,8 +7,11 @@ import MessageForm from './MessageForm';
 import { connect } from 'react-redux';
 import firebase from '../../../firebase';
 import { setUserPosts } from '../../../redux/actions/chatRoom_action';
+import Skeleton from '../../../commons/components/Skeleton';
 
 export class MainPanel extends Component {
+
+    messageEndRef = React.createRef();
 
     state = {
         messages: [],
@@ -28,6 +31,13 @@ export class MainPanel extends Component {
         if (chatRoom) {
             this.addMessagesListeners(chatRoom.id)
             this.addTypingListeners(chatRoom.id)
+        }
+    }
+
+    //스크롤 부분
+    componentDidUpdate(){   
+        if(this.messageEndRef){
+            this.messageEndRef.scrollIntoView({ behavior: "smooth" }) 
         }
     }
 
@@ -159,8 +169,17 @@ export class MainPanel extends Component {
             <span>{user.name}님이 채팅을 입력하고 있습니다...</span>
         ))
 
+        renderMessageSkeleton = (loading) =>
+            loading && (
+             <>
+             {[0, 1, 2, 3, 4, 5, 6, 7].map((v, i) => (
+                 <Skeleton key={i}></Skeleton>
+             ))}
+            </>
+        )
+
         render() {
-            const { messages, searchTerm, searchResults, typingUsers } = this.state;
+            const { messages, searchTerm, searchResults, typingUsers, messagesLoading } = this.state;
             return (
                 <div style={{ padding: '2rem 2rem 0 2rem' }}>
     
@@ -175,6 +194,10 @@ export class MainPanel extends Component {
                         marginBottom: '1rem',
                         overflowY: 'auto'
                     }}>
+
+                    {/* 스켈레톤처리 부분  1줄*/}
+                    {this.renderMessageSkeleton(messagesLoading)}
+
                         {searchTerm ?
                             this.renderMessages(searchResults)
                             :
@@ -182,6 +205,10 @@ export class MainPanel extends Component {
                         }
     
                         {this.renderTypingUsers(typingUsers)}
+
+                        <div ref={node => (this.messageEndRef = node)}>     {/*node는 div를 가르키고 messageEndRef가 div를 계속 참조 */}
+
+                        </div>
                     </div>
     
                     <MessageForm />

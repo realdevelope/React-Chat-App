@@ -26,7 +26,7 @@ return (
                 alt={message.user.name}
             />
             <Media.Body style={{
-                backgroundColor: isMessageMine(message, user) && "#ECECEC"
+                backgroundColor: isMessageMine(message, user) && "#ECECEC" 
             }}>
                 <h6>{message.user.name}{" "}
                     <span style={{ fontSize: '10px', color: 'gray' }}>
