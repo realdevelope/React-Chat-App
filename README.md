@@ -8,6 +8,8 @@
 
 ## 미리보기
 #02/06 v0.1.0 https://react-react-chat-app.web.app
+#02/07 v0.1.1 https://react-react-chat-app.web.app
+(한글화, DM user 카운트 오류수정, enter 전송 keycode 수정)
 
 ## 학습내용
 
