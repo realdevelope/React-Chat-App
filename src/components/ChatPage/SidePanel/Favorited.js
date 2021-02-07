@@ -72,7 +72,7 @@ export class Favorited extends Component {
                     backgroundColor: chatRoom.id === this.state.activeChatRoomId && "#ffffff45"
                 }}
             >
-                # {chatRoom.name}
+                - {chatRoom.name}
             </li>
         ))
 
@@ -82,7 +82,7 @@ export class Favorited extends Component {
             <div>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                     <FaRegSmileBeam style={{ marginRight: '3px' }} />
-                    FAVORITED ({favoritedChatRooms.length})
+                    즐겨찾기 ({favoritedChatRooms.length})
             </span>
                 <ul style={{ listStyleType: 'none', padding: '0' }}>
                     {this.renderFavoritedChatRooms(favoritedChatRooms)}

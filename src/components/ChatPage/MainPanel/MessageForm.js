@@ -125,7 +125,7 @@ function MessageForm() {
     const handleKeyDown = (event) => {
 
         //enter키로 메세지 보내는 부분
-       if(event.ctrlKey && event.keyCode === 13){
+       if(event.keyCode === 13){
            handleSubmit();
        }
 
@@ -170,7 +170,7 @@ function MessageForm() {
                         style={{ width: '100%' }}
                         disabled={loading ? true : false}
                     >
-                        SEND
+                        전송
                     </button>
                 </Col>
                 <Col>
@@ -180,7 +180,7 @@ function MessageForm() {
                         style={{ width: '100%' }}
                         disabled={loading ? true : false}
                     >
-                        UPLOAD
+                        사진/동영상 첨부
                     </button>
                 </Col>
             </Row>

@@ -84,7 +84,7 @@ export class DirectMessages extends Component {
                         && "#ffffff45"
                 }}
                 onClick={() => this.changeChatRoom(user)}>
-                # {user.name}
+                ㅡ {user.name}
             </li>
         ))
 
@@ -94,7 +94,7 @@ export class DirectMessages extends Component {
             return (
                 <div>
                     <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <FaRegSmile style={{ marginRight: 3 }} />  DIRECT MESSAGES(1)
+                        <FaRegSmile style={{ marginRight: 3 }} />  DM({users.length})
                     </span>
     
                     <ul style={{ listStyleType: 'none', padding: 0 }}>

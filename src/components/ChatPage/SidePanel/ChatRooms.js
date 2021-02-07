@@ -199,7 +199,7 @@ export class ChatRooms extends Component {
             <li key={room.id}
                 style={{ backgroundColor: room.id === this.state.activeChatRoomId && "#ffffff45"}}
                 onClick={() => this.changeChatRoom(room)}
-             >#{room.name}
+             >ㅡ{room.name}
                  <Badge style={{ float: 'right', marginTop: '4px' }} variant="danger">
                     {this.getNotificationCounut(room)}  {/*알림 숫자 보여주기 */}
                 </Badge>
@@ -214,13 +214,14 @@ export class ChatRooms extends Component {
             <div>
                 <div style={{
                     position: 'relative',
+                    
                     width: '100%',
                     display: 'flex',
                     alignItems: 'center'
                 }}> 
 
                     <FaRegSmileWink style={{  marginRight: 3 }}></FaRegSmileWink>
-                    CHAT ROOMS {" "} ({chatRooms.length})
+                    오픈 채팅방 {" "} ({chatRooms.length})
 
                     <FaPlus
                         onClick={this.handleShow} 
@@ -246,7 +247,7 @@ export class ChatRooms extends Component {
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Create a chat room</Modal.Title>
+                        <Modal.Title>방 만들기</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={this.handleSubmit}>
@@ -254,24 +255,24 @@ export class ChatRooms extends Component {
                                 <Form.Label>방 이름</Form.Label>
                                 <Form.Control
                                     onChange={(e) => this.setState({ name: e.target.value })}
-                                    type="text" placeholder="Enter a chat room name" />
+                                    type="text" placeholder="방이름을 입력하세요" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
                                 <Form.Label>방 설명</Form.Label>
                                 <Form.Control
                                     onChange={(e) => this.setState({ description: e.target.value })}
-                                    type="text" placeholder="Enter a chat room description" />
+                                    type="text" placeholder="방에 대한 설명을 입력하세요" />
                             </Form.Group>
                         </Form>
 
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleClose}>
-                            Close
+                            닫기
                         </Button>
                         <Button variant="primary" onClick={this.handleSubmit}>
-                            Create
+                            방생성
                         </Button>
                     </Modal.Footer>
                 </Modal>

@@ -55,7 +55,7 @@ function UserPanel() {
         <div>
             {/* Logo */}
             <h3 style={{ color: 'white' }}>
-                <IoIosChatboxes />{" "} Chat App
+                <IoIosChatboxes />{" "} HUNSCORD
             </h3>
 
             <div style={{ display: 'flex', marginBottom: '1rem' }}>

@@ -142,7 +142,7 @@ function MessageHeader({ handleSearchChange }) {
                             </InputGroup.Prepend>
                             <FormControl
                                 onChange={handleSearchChange}
-                                placeholder="Search Messages"
+                                placeholder="찾을 메세지를 입력하세요"
                                 aria-label="Search"
                                 aria-describedby="basic-addon1"
                             />
@@ -153,6 +153,7 @@ function MessageHeader({ handleSearchChange }) {
                             
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <p>
+                        방장 : 
                         <Image src={chatRoom && chatRoom.createdBY.image}
                             roundedCircle style={{ width: '30px', height: '30px' }}
                         /> {" "} {chatRoom && chatRoom.createdBY.name}
@@ -166,7 +167,7 @@ function MessageHeader({ handleSearchChange }) {
                             <Card>
                                 <Card.Header style={{ padding: '0 1rem' }}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Description
+                                        방 설명(공지사항)
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
@@ -180,7 +181,7 @@ function MessageHeader({ handleSearchChange }) {
                             <Card>
                                 <Card.Header style={{ padding: '0 1rem' }}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Posts Count
+                                        사용자별 채팅 수
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
