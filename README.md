@@ -7,7 +7,7 @@
 #Firebase
 
 ## 미리보기
-#02/06 배포 https://react-react-chat-app.web.app
+#02/06 v0.1.0 https://react-react-chat-app.web.app
 
 ## 학습내용
 
