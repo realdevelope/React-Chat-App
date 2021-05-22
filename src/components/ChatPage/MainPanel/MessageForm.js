@@ -11,13 +11,13 @@ function MessageForm() {
 
     const chatRoom = useSelector(state => state.chatRoom.currentChatRoom)
     const user = useSelector(state => state.user.currentUser)
-    const [content, setContent] = useState("")
-    const [errors, setErrors] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [ content, setContent ] = useState("")
+    const [ errors, setErrors ] = useState([])
+    const [ loading, setLoading ] = useState(false)
     const messagesRef = firebase.database().ref("messages")
     const inputOpenImageRef = useRef();
     const storageRef = firebase.storage().ref();
-    const [percentage, setPercentage] = useState(0)
+    const [ percentage, setPercentage ] = useState(0)
     const isPrivateChatRoom = useSelector(state => state.chatRoom.isPrivateChatRoom)
     const typingRef = firebase.database().ref("typing");
 
@@ -60,7 +60,8 @@ function MessageForm() {
             setLoading(false)
             setContent("")
             setErrors([])
-        } catch (error) {
+        } 
+        catch (error) {
             setErrors(pre => pre.concat(error.message))
             setLoading(false)
             setTimeout(() => {
@@ -121,7 +122,6 @@ function MessageForm() {
         }
     }
 
-
     const handleKeyDown = (event) => {
 
         //enter키로 메세지 보내는 부분
@@ -133,10 +133,9 @@ function MessageForm() {
             typingRef.child(chatRoom.id).child(user.uid).set(user.displayName)  //타이핑 테이블에 넣음
         }
         else{
-            typingRef.child(chatRoom.id).child(user.uid).remove();  //테이핑 테이블에 넣은걸 지움
+            typingRef.child(chatRoom.id).child(user.uid).remove();  //타이핑 테이블에 넣은걸 지움
         }
     }
-
 
     return (
         <div>

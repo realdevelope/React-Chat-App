@@ -4,7 +4,7 @@ import { FaRegSmile } from 'react-icons/fa';
 import firebase from '../../../firebase';
 import { connect } from 'react-redux';
 import { setCurrentChatRoom, setPrivateChatRoom } 
-        from '../../../redux/actions/chatRoom_action';
+        from '../../../redux/actions/chatRoomAction';
 
 export class DirectMessages extends Component {
 
@@ -20,7 +20,6 @@ export class DirectMessages extends Component {
         }
     }
 
-
     addUsersListeners = (currentUserId) => {
         const { usersRef } = this.state;
         let usersArray = [];
@@ -35,7 +34,6 @@ export class DirectMessages extends Component {
         })
     }
 
-
     renderDirectMessages = users =>
         users.length > 0 &&
         users.map(user => (
@@ -49,13 +47,11 @@ export class DirectMessages extends Component {
             </li>
         ))
 
-
     getChatRoomId = (userId) => {
         const currentUserId = this.props.user.uid
 
         return userId > currentUserId  ? `${userId}/${currentUserId}` : `${currentUserId}/${userId}`
     }
-
 
     changeChatRoom = (user) => {
         const chatRoomId = this.getChatRoomId(user.uid);
@@ -69,11 +65,9 @@ export class DirectMessages extends Component {
         this.setActiveChatRoom(user.uid);
     }
 
-
     setActiveChatRoom = (userId) => {
         this.setState({ activeChatRoom: userId })
     }
-
 
     renderDirectMessages = users =>
         users.length > 0 &&
@@ -87,7 +81,6 @@ export class DirectMessages extends Component {
                 ㅡ {user.name}
             </li>
         ))
-
 
         render() {
             const { users } = this.state;
@@ -104,7 +97,6 @@ export class DirectMessages extends Component {
             )
         }
     }
-
 
 const mapStateToProps = state => {
     return {

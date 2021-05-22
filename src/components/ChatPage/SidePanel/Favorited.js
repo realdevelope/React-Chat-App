@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FaRegSmileBeam } from 'react-icons/fa';
 import firebase from '../../../firebase';
 import { connect } from 'react-redux';
-import { setCurrentChatRoom, setPrivateChatRoom } from '../../../redux/actions/chatRoom_action';
+import { setCurrentChatRoom, setPrivateChatRoom } from '../../../redux/actions/chatRoomAction';
 
 export class Favorited extends Component {
 
@@ -72,7 +72,7 @@ export class Favorited extends Component {
                     backgroundColor: chatRoom.id === this.state.activeChatRoomId && "#ffffff45"
                 }}
             >
-                - {chatRoom.name}
+                ㅡ {chatRoom.name}
             </li>
         ))
 

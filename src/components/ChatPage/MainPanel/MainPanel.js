@@ -6,7 +6,7 @@ import Message from './Message';
 import MessageForm from './MessageForm';
 import { connect } from 'react-redux';
 import firebase from '../../../firebase';
-import { setUserPosts } from '../../../redux/actions/chatRoom_action';
+import { setUserPosts } from '../../../redux/actions/chatRoomAction';
 import Skeleton from '../../../commons/components/Skeleton';
 
 export class MainPanel extends Component {

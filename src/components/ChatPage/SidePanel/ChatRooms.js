@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import firebase from '../../../firebase';
-import { setCurrentChatRoom, setPrivateChatRoom } from '../../../redux/actions/chatRoom_action';
+import { setCurrentChatRoom, setPrivateChatRoom } from '../../../redux/actions/chatRoomAction';
 import Badge from 'react-bootstrap/Badge';
 
 export class ChatRooms extends Component {
@@ -27,15 +27,13 @@ export class ChatRooms extends Component {
         this.AddChatRoomsListeners();
     }
 
-
     componentWillUnmount() {
-        this.state.chatRoomsRef.off();      //컴포넌트가 제거되었을 때 Listener도 제거
+        this.state.chatRoomsRef.off(); //컴포넌트가 제거되었을 때 Listener도 제거
 
-        this.state.chatRooms.forEach(chatRoom => {       //messageRef 정리
+        this.state.chatRooms.forEach(chatRoom => { //messageRef 정리
             this.state.messagesRef.child(chatRoom.id).off();
         })
     }
-
 
     setFirstChatRoom = () => {
 
@@ -59,11 +57,10 @@ export class ChatRooms extends Component {
         })
     }
 
-
     addNotificationListener = (chatRoomId) => {
         this.state.messagesRef.child(chatRoomId).on("value", DataSnapshot => {
             if (this.props.chatRoom) {
-                this.handleNotification(    //핸들링 부분
+                this.handleNotification( //핸들링 부분
                     chatRoomId,
                     this.props.chatRoom.id, //현재 채팅룸 아이디
                     this.state.notifications,
@@ -72,7 +69,6 @@ export class ChatRooms extends Component {
             }
         })
     }
-
 
     handleNotification = (chatRoomId, currentChatRoomId, notifications, DataSnapshot) => {
         let lastTotal = 0;
@@ -112,10 +108,9 @@ export class ChatRooms extends Component {
         this.setState({ notifications })
     }
 
-
     handleClose = () => this.setState({ show: false });
+ 
     handleShow = () => this.setState({ show: true });
-   
    
     handleSubmit = (e) => {
         e.preventDefault();
@@ -125,11 +120,9 @@ export class ChatRooms extends Component {
             this.addChatRoom();
         }
     }
-   
     
     addChatRoom = async () => {
         const key = this.state.chatRoomsRef.push().key;  // auto-generated key 자동으로 생성된 키를 넣어주고 그 key를 id에 넣음
-
         const { name, description } = this.state;
         const { user } = this.props
         const newChatRoom = {
@@ -154,7 +147,6 @@ export class ChatRooms extends Component {
         }
     }
 
-
     isFormValid = (name, description) =>   //유효성검사체크 - 단순하게 있기만하면!!!
         name && description;
 
@@ -165,7 +157,6 @@ export class ChatRooms extends Component {
             this.clearNotifications();
         }
 
-
     clearNotifications = () => {
         let index = this.state.notifications.findIndex(
             notification => notification.id === this.props.chatRoom.id
@@ -173,25 +164,24 @@ export class ChatRooms extends Component {
 
         if(index !== -1) {
             let updatedNotifications = [...this.state.notifications];
+
             updatedNotifications[index].lastKnownTotal = this.state.notifications[index].total;
             updatedNotifications[index].count = 0;
             this.setState({ notification: updatedNotifications })   //state에 넣어주기
         }
     }
 
-
     getNotificationCounut = (room) => {
         //해당 채팅방의 count 수를 구함
         let count = 0;
 
         this.state.notifications.forEach(notification => {
-            if (notification.id === room.id){
+            if (notification.id === room.id) {
                 count = notification.count;
             }
         })
-        if(count > 0) return count;
+        if (count > 0) return count;
     }
-
 
     renderChatRooms = (chatRooms) => 
         chatRooms.length > 0 &&
@@ -205,7 +195,6 @@ export class ChatRooms extends Component {
                 </Badge>
              </li>
         ))
-
 
     render() { 
         const { chatRooms } = this.state;
@@ -282,7 +271,7 @@ export class ChatRooms extends Component {
     }
 }
 
-const mapStateToProps = state => {   //state에 들어있는것을 props로 바꿔서 사용
+const mapStateToProps = state => { //state에 들어있는것을 props로 바꿔서 사용
     return {
         user: state.user.currentUser,
         chatRoom: state.chatRoom.currentChatRoom

@@ -20,7 +20,7 @@ function MessageHeader({ handleSearchChange }) {
 
     const chatRoom = useSelector(state => state.chatRoom.currentChatRoom)
     const isPrivateChatRoom = useSelector(state => state.chatRoom.isPrivateChatRoom)
-    const [isFavorited, setIsFavorited] = useState(false);
+    const [ isFavorited, setIsFavorited ] = useState(false);
     const usersRef = firebase.database().ref("users");
     const user = useSelector(state => state.user.currentUser);
     const userPosts = useSelector(state => state.chatRoom.userPosts);
@@ -131,7 +131,6 @@ function MessageHeader({ handleSearchChange }) {
                             }
                         </h2>
                     </Col>
-
 
                     <Col>
                         <InputGroup className="mb-3">

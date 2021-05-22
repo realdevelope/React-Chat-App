@@ -1,4 +1,4 @@
-import {SET_CURRENT_CHAT_ROOM, SET_PRIVATE_CHAT_ROOM, SET_USER_POSTS } from '../actions/types';
+import { SET_CURRENT_CHAT_ROOM, SET_PRIVATE_CHAT_ROOM, SET_USER_POSTS } from '../actions/types';
 
 const initialChatRoomState = {
     currentChatRoom: null,

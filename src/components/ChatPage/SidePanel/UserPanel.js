@@ -5,7 +5,7 @@ import Image from 'react-bootstrap/Image';
 import { useDispatch, useSelector } from 'react-redux';
 import firebase from '../../../firebase';
 import mime from 'mime-types';
-import { setPhotoURL } from '../../../redux/actions/user_action';
+import { setPhotoURL } from '../../../redux/actions/userAction';
 
 function UserPanel() {
     const user = useSelector(state => state.user.currentUser)
